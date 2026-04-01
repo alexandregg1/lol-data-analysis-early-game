@@ -1,0 +1,116 @@
+# Observação:
+# As análises indicam associações entre variáveis e vitória,
+# mas não implicam causalidade direta.
+
+##Importação e visão geral
+```{r}
+## Importação dos dados
+dados = read.csv("ranked_10min.csv", sep = ",", na.strings="", stringsAsFactors=FALSE)
+
+head(dados)
+summary(dados)
+str(dados)
+
+# Dimensões
+dim(dados)
+
+# Nomes das colunas
+colnames(dados)
+
+# Valores faltantes
+colSums(is.na(dados))
+```
+#Variável alvo
+```{r}
+# Taxa de vitória média
+mean(dados$blueWins, na.rm = TRUE)
+
+# Distribuição
+counts = table(dados$blueWins)
+barplot(counts, main="BlueWins", xlab="BlueWins")
+```
+#Feature Engineering
+```{r}
+dados$goldDiff <- dados$blueGold - dados$redGold
+dados$killDiff <- dados$blueKills - dados$redKills
+dados$dragonDiff <- dados$blueDragons - dados$redDragons
+dados$towerDiff <- dados$blueTowersDestroyed - dados$redTowersDestroyed
+# goldDiff representa a diferença de ouro entre os times (blue - red)
+```
+#Análise exploratória
+```{r}
+cor(dados$goldDiff, dados$blueWins, use="complete.obs")
+cor(dados$killDiff, dados$blueWins, use="complete.obs")
+cor(dados$dragonDiff, dados$blueWins, use="complete.obs")
+# A diferença de ouro no early game apresenta a maior correlação com vitória,
+# seguida por kills e controle de objetivos, indicando que vantagem econômica
+# é o principal fator associado ao resultado da partida.
+```
+#Gráfico simples
+```{r}
+plot(dados$goldDiff, dados$blueWins,
+     main="Gold Difference vs Win",
+     xlab="Gold Difference (10 min)",
+     ylab="Win (Blue Team)",
+     pch=16, col=rgb(0,0,1,0.3))
+```
+#Análise de objetivos
+```{r}
+#Dragões
+aggregate(blueWins ~ blueDragons, data = dados, mean)
+table(dados$blueDragons)
+# Times que garantem pelo menos um dragão apresentam uma taxa de vitória significativamente maior (~64%)
+# em comparação com aqueles que não garantem (~42%), indicando forte associação entre controle de objetivos
+# iniciais e sucesso na partida.
+```
+
+```{r}
+#Arauto
+aggregate(blueWins ~ blueHeralds, data = dados, mean)
+table(dados$blueHeralds)
+# O controle do Arauto também está associado a uma maior taxa de vitória (~59% vs ~47%),
+# reforçando a importância dos objetivos neutros no early game.
+```
+#Análise de vantagem
+```{r}
+dados$goldLead <- ifelse(dados$goldDiff > 0, "Vantagem", "Desvantagem")
+
+aggregate(blueWins ~ goldLead, data = dados, mean)
+# Times com vantagem de ouro aos 10 minutos apresentam uma taxa de vitória significativamente maior,
+# confirmando a importância do early game no resultado da partida.
+```
+#Análise por faixas
+```{r}
+dados$goldCategory <- cut(dados$goldDiff,
+                         breaks = c(-Inf, -1000, 0, 1000, Inf),
+                         labels = c("Muito atrás", "Atrás", "Leve vantagem", "Grande vantagem"))
+
+dados$goldCategory <- factor(dados$goldCategory,
+                             levels = c("Muito atrás", "Atrás", "Leve vantagem", "Grande vantagem"),
+                             ordered = TRUE)
+aggregate(blueWins ~ goldCategory, data = dados, 
+          function(x) c(media = mean(x), n = length(x)))
+
+library(ggplot2)
+
+ggplot(dados, aes(x = goldCategory, fill = factor(blueWins))) +
+  geom_bar(position = "fill") +
+  labs(y = "Proporção", fill = "Vitória") +
+  ggtitle("Distribuição de vitórias por vantagem de ouro")
+# À medida que a vantagem de ouro aumenta, a taxa de vitória também cresce,
+# indicando uma relação progressiva entre vantagem econômica e sucesso na partida.
+# Se manter em grandes vantagens além do gold contribuem para o aumento da taxa de vitória, fazendo com que o time com melhor economia e melhor distribuição de vantagem se mantenham à frente na partida.
+``` 
+#Análise combinada
+```{r}
+aggregate(blueWins ~ blueDragons + goldLead, data = dados, 
+          function(x) c(media = mean(x), n = length(x)))
+# A combinação de vantagem de ouro e controle de dragões aumenta significativamente a taxa de vitória,
+# indicando que fatores econômicos e objetivos atuam de forma complementar no early game.
+
+```
+# Conclusão Geral
+# Os resultados indicam que a vantagem de ouro no early game é o fator mais fortemente associado à vitória,
+# sendo potencializada pelo controle de objetivos como dragões e arauto.
+# A análise sugere que fatores econômicos e estratégicos atuam de forma complementar,
+# influenciando significativamente o desempenho das equipes ao longo da partida.
