@@ -1,74 +1,65 @@
-# Análise de Dados - League of Legends (Early Game)
+# Data Analysis - League of Legends (Early Game)
 
+This project aims to analyze early game factors (first 10 minutes)
+that influence victory in ranked League of Legends matches.
 
-Este projeto tem como objetivo analisar fatores do early game (primeiros 10 minutos)
-que influenciam a vitória em partidas ranqueadas de League of Legends.
+The analysis was conducted using R, SQL, and Power BI, exploring match data
+to identify patterns and relationships between performance and final outcomes.
 
-A análise foi realizada utilizando R, SQL e Power BI, explorando dados de partidas
-para identificar padrões e relações entre desempenho e resultado final.
+## Objective
 
+To identify which factors in the first 10 minutes of the game have the greatest impact
+on the probability of winning ranked League of Legends matches.
 
-## Objetivo
+## 📊 Technologies Used
 
-Identificar quais fatores nos primeiros 10 minutos de jogo possuem maior impacto
-na probabilidade de vitória em partidas ranqueadas de League of Legends.
-
-
-## 📊 Tecnologias utilizadas
-
-- R (análise exploratória)
-- SQL (consultas e validação)
-- Power BI (visualização e dashboard)
-
+- R (exploratory data analysis)
+- SQL (queries and validation)
+- Power BI (visualization and dashboard)
 
 ## 📁 Dataset
 
-O dataset contém informações de partidas ranqueadas,
-com foco nos primeiros 10 minutos do jogo, incluindo:
+The dataset contains information from ranked matches,
+focusing on the first 10 minutes of the game, including:
 
-- Ouro total
+- Total gold
 - Kills
-- Dragões
-- Arauto
-- Torres
+- Dragons
+- Rift Herald
+- Towers
 - Farm (CS)
 
+## 🧹 Data Processing
 
-## 🧹 Tratamento de Dados
+The project uses two versions of the dataset:
 
-O projeto utiliza duas versões do dataset:
+- **Raw data (`data/raw/ranked_10min_nao_tratado.csv`)**: original dataset without modifications.
+- **Processed data (`data/processed/ranked_10min_tratado.csv`)**: version after cleaning and transformation performed in R.
 
-- **Dados brutos (`data/raw/ranked_10min_nao_tratado.csv`)**: versão original do dataset, sem modificações.
-- **Dados tratados (`data/processed/ranked_10min_tratado.csv`)**: versão após limpeza e transformação realizada em R.
+The data processing includes:
+- Data type adjustments
+- Creation of derived variables (e.g., gold difference, kills, and objectives)
+- Organization of data for analysis and visualization
 
-O processo de tratamento inclui:
-- Ajuste de tipos de dados
-- Criação de variáveis derivadas (ex: diferença de ouro, kills e objetivos)
-- Organização das informações para análise e visualização
+This separation helps maintain the integrity of the original data and ensures reproducibility of the analysis process.
 
-Essa separação permite manter a integridade dos dados originais e garantir reprodutibilidade no processo de análise.
+## 📈 Key Insights
 
-
-
-## 📈 Principais Insights
-
-- A vantagem de ouro no early game é o fator mais fortemente associado à vitória.
-- Times com vantagem simultânea em kills e farm apresentam a maior taxa de vitória (~77%).
-- O controle de objetivos como dragões e arauto aumenta significativamente as chances de vitória.
-- Vantagem isolada de farm não garante sucesso, sendo necessário convertê-la em pressão no jogo.
-
+- Gold advantage in the early game is the factor most strongly associated with victory.
+- Teams with simultaneous advantages in kills and farm have the highest win rate (~77%).
+- Control of objectives such as dragons and Rift Herald significantly increases the chances of winning.
+- Isolated farm advantage does not guarantee success, requiring conversion into in-game pressure.
 
 ## 📊 Dashboard
 
-Visualização dos principais insights obtidos na análise:
+Visualization of the main insights obtained in the analysis:
 
 ![Dashboard](./images/Dashboard-1.png)
 
+## Conclusion
 
-## Conclusão
+The results indicate that victory is strongly related to the ability
+to generate an advantage in the early game and convert it into pressure.
 
-Os resultados indicam que a vitória está fortemente relacionada à capacidade de gerar
-vantagem no early game e convertê-la em pressão no jogo.
-
-A combinação entre fatores econômicos (ouro e farm) e estratégicos (kills e objetivos)
-se mostra determinante para o sucesso das equipes.
+The combination of economic factors (gold and farm) and strategic factors (kills and objectives)
+proves to be decisive for team success.
