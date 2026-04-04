@@ -46,7 +46,7 @@ This separation helps maintain the integrity of the original data and ensures re
 ## 📈 Key Insights
 
 - Gold advantage in the early game is the factor most strongly associated with victory.
-- Teams with simultaneous advantages in kills and farm have the highest win rate (~77%).
+- Teams with simultaneous advantages in kills and farm have the highest win rate (~76%).
 - Control of objectives such as dragons and Rift Herald significantly increases the chances of winning.
 - Isolated farm advantage does not guarantee success, requiring conversion into in-game pressure.
 
