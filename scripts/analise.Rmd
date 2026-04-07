@@ -5,7 +5,7 @@
 ##Importação e visão geral
 ```{r}
 ## Importação dos dados
-dados = read.csv("ranked_10min.csv", sep = ",", na.strings="", stringsAsFactors=FALSE)
+dados = read.csv("../data/raw/ranked_10min_nao_tratado.csv", sep = ",", na.strings="", stringsAsFactors=FALSE)
 
 head(dados)
 summary(dados)
